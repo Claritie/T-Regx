@@ -1,7 +1,11 @@
 <?php
 
 if (!function_exists('pattern')) {
-    function pattern(string $pattern): \CleanRegex\Pattern
+    /**
+     * @param string $pattern
+     * @return \CleanRegex\Pattern
+     */
+    function pattern($pattern)
     {
         return new \CleanRegex\Pattern($pattern);
     }

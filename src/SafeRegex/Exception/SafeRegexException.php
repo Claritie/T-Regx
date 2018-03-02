@@ -1,18 +1,29 @@
 <?php
 namespace SafeRegex\Exception;
 
+use CleanRegex\Internal\Arguments;
+
 abstract class SafeRegexException extends \Exception
 {
     /** @var string */
     private $methodName;
 
-    public function __construct(string $methodName, string $message = null)
+    /**
+     * @param string      $methodName
+     * @param string|null $message
+     */
+    public function __construct($methodName, $message = null)
     {
+        Arguments::string($methodName)->stringOrNull($message);
+
         parent::__construct($message);
         $this->methodName = $methodName;
     }
 
-    public function getInvokingMethod(): string
+    /**
+     * @return string
+     */
+    public function getInvokingMethod()
     {
         return $this->methodName;
     }

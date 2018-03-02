@@ -11,22 +11,32 @@ abstract class CompileError implements HostError
     /** @var PhpError|null */
     private $error;
 
-    public function __construct(?PhpError $error)
+    public function __construct(PhpError $error = null)
     {
         $this->error = $error;
     }
 
-    protected function getError(): ?PhpError
+    /**
+     * @return null|PhpError
+     */
+    protected function getError()
     {
         return $this->error;
     }
 
-    public function getSafeRegexpException(string $methodName): SafeRegexException
+    /**
+     * @param string $methodName
+     * @return SafeRegexException
+     */
+    public function getSafeRegexpException($methodName)
     {
         return new CompileSafeRegexException($methodName, $this->error);
     }
 
-    public static function getLast(): CompileError
+    /**
+     * @return CompileError
+     */
+    public static function getLast()
     {
         $phpError = PhpError::getLast();
 

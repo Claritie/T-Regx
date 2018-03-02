@@ -1,7 +1,7 @@
 <?php
 namespace Test\CleanRegex;
 
-use CleanRegex\Internal\Pattern;
+use CleanRegex\Internal\Pattern as InternalPattern;
 use CleanRegex\ValidPattern;
 use PHPUnit\Framework\TestCase;
 
@@ -12,10 +12,10 @@ class ValidPatternTest extends TestCase
      * @dataProvider validPatterns
      * @param string $string
      */
-    public function shouldValidatePattern(string $string)
+    public function shouldValidatePattern( $string)
     {
         // given
-        $pattern = new ValidPattern(new Pattern($string));
+        $pattern = new ValidPattern(new InternalPattern($string));
 
         // when
         $isValid = $pattern->isValid();
@@ -37,10 +37,10 @@ class ValidPatternTest extends TestCase
      * @dataProvider \Test\DataProviders::invalidPregPatterns()
      * @param string $string
      */
-    public function shouldNotValidatePattern(string $string)
+    public function shouldNotValidatePattern( $string)
     {
         // given
-        $pattern = new ValidPattern(new Pattern($string));
+        $pattern = new ValidPattern(new InternalPattern($string));
 
         // when
         $isValid = $pattern->isValid();

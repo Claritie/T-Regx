@@ -5,9 +5,19 @@ use SafeRegex\Exception\SafeRegexException;
 
 interface HostError
 {
-    public function occurred(): bool;
+    /**
+     * @return bool
+     */
+    public function occurred();
 
-    public function clear(): void;
+    /**
+     * @return void
+     */
+    public function clear();
 
-    public function getSafeRegexpException(string $methodName): ?SafeRegexException;
+    /**
+     * @param string $methodName
+     * @return null|SafeRegexException
+     */
+    public function getSafeRegexpException($methodName);
 }

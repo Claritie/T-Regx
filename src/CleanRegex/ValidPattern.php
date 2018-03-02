@@ -2,20 +2,23 @@
 namespace CleanRegex;
 
 use CleanRegex\Exception\CleanRegex\ArgumentNotAllowedException;
-use CleanRegex\Internal\Pattern;
+use CleanRegex\Internal\Pattern as InternalPattern;
 use SafeRegex\Guard\GuardedExecution;
 
 class ValidPattern
 {
-    /** @var Pattern */
+    /** @var InternalPattern */
     private $pattern;
 
-    public function __construct(Pattern $pattern)
+    public function __construct(InternalPattern $pattern)
     {
         $this->pattern = $pattern;
     }
 
-    public function isValid(): bool
+    /**
+     * @return bool
+     */
+    public function isValid()
     {
         $hadError = GuardedExecution::silenced('preg_match', function () {
             return @preg_match($this->pattern->originalPattern, null);
@@ -24,7 +27,12 @@ class ValidPattern
         return $hadError === false;
     }
 
-    public static function matchableArgument($argument): string
+    /**
+     * @param $argument
+     * @return string
+     * @throws ArgumentNotAllowedException
+     */
+    public static function matchableArgument($argument)
     {
         if (is_string($argument)) {
             return $argument;

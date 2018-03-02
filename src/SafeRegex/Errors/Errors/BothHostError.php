@@ -2,7 +2,6 @@
 namespace SafeRegex\Errors\Errors;
 
 use SafeRegex\Errors\HostError;
-use SafeRegex\Exception\SafeRegexException;
 
 class BothHostError implements HostError
 {
@@ -17,18 +16,18 @@ class BothHostError implements HostError
         $this->runtime = $runtimeError;
     }
 
-    public function occurred(): bool
+    public function occurred()
     {
         return $this->compile->occurred() || $this->runtime->occurred();
     }
 
-    public function clear(): void
+    public function clear()
     {
         $this->compile->occurred() && $this->compile->clear();
         $this->runtime->occurred() && $this->runtime->clear();
     }
 
-    public function getSafeRegexpException(string $methodName): SafeRegexException
+    public function getSafeRegexpException($methodName)
     {
         return $this->compile->getSafeRegexpException($methodName);
     }

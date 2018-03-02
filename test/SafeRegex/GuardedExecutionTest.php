@@ -23,7 +23,7 @@ class GuardedExecutionTest extends TestCase
         call_user_func($obsoleteWarning);
 
         // when
-        $invocation = GuardedExecution::catch('preg_match', function () {
+        $invocation = GuardedExecution::catched('preg_match', function () {
             return 1;
         });
 
@@ -50,7 +50,7 @@ class GuardedExecutionTest extends TestCase
     public function shouldCatchRuntimeWarning()
     {
         // when
-        $invocation = GuardedExecution::catch('preg_match', function () {
+        $invocation = GuardedExecution::catched('preg_match', function () {
             $this->causeRuntimeWarning();
             return false;
         });
@@ -66,7 +66,7 @@ class GuardedExecutionTest extends TestCase
     public function shouldCatchCompileWarning()
     {
         // when
-        $invocation = GuardedExecution::catch('preg_match', function () {
+        $invocation = GuardedExecution::catched('preg_match', function () {
             $this->causeCompileWarning();
             return false;
         });
@@ -141,7 +141,7 @@ class GuardedExecutionTest extends TestCase
     public function shouldCatchReturnResult()
     {
         // when
-        $invocation = GuardedExecution::catch('preg_match', function () {
+        $invocation = GuardedExecution::catched('preg_match', function () {
             return 13;
         });
 

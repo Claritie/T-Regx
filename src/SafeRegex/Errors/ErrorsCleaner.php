@@ -8,7 +8,7 @@ use SafeRegex\Errors\Errors\RuntimeError;
 
 class ErrorsCleaner
 {
-    public function clear(): void
+    public function clear()
     {
         $error = $this->getError();
 
@@ -17,7 +17,10 @@ class ErrorsCleaner
         }
     }
 
-    public function getError(): HostError
+    /**
+     * @return HostError
+     */
+    public function getError()
     {
         $compile = CompileError::getLast();
         $runtime = RuntimeError::getLast();

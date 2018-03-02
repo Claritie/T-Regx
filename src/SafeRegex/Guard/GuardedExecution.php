@@ -2,6 +2,8 @@
 
 namespace SafeRegex\Guard;
 
+use CleanRegex\Internal\Arguments;
+
 class GuardedExecution
 {
     /**
@@ -10,23 +12,37 @@ class GuardedExecution
      * @return mixed
      * @throws \Exception
      */
-    public static function invoke(string $methodName, callable $callback)
+    public static function invoke($methodName, callable $callback)
     {
-        $invocation = (new GuardedInvoker($methodName, $callback))->catch();
+        $invocation = (new GuardedInvoker($methodName, $callback))->catched();
         if ($invocation->hasException()) {
             throw $invocation->getException();
         }
         return $invocation->getResult();
     }
 
-    public static function catch(string $methodName, callable $callback): GuardedInvocation
+    /**
+     * @param string   $methodName
+     * @param callable $callback
+     * @return GuardedInvocation
+     */
+    public static function catched($methodName, callable $callback)
     {
-        return (new GuardedInvoker($methodName, $callback))->catch();
+        Arguments::string($methodName);
+
+        return (new GuardedInvoker($methodName, $callback))->catched();
     }
 
-    public static function silenced(string $methodName, callable $callback): bool
+    /**
+     * @param string   $methodName
+     * @param callable $callback
+     * @return bool
+     */
+    public static function silenced($methodName, callable $callback)
     {
-        $invocation = (new GuardedInvoker($methodName, $callback))->catch();
+        Arguments::string($methodName);
+
+        $invocation = (new GuardedInvoker($methodName, $callback))->catched();
         return $invocation->hasException();
     }
 }

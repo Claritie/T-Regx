@@ -1,18 +1,31 @@
 <?php
 namespace CleanRegex\Internal\Delimiter;
 
+use CleanRegex\Internal\Arguments;
+
 class DelimiterParser
 {
     /** @var array */
     private $validDelimiters = ['/', '#', '%', '~', '+', '!'];
 
-    public function isDelimitered(string $pattern): bool
+    /**
+     * @param string $pattern
+     * @return bool
+     */
+    public function isDelimitered($pattern)
     {
+        Arguments::string($pattern);
         return $this->getDelimiter($pattern) !== null;
     }
 
-    public function getDelimiter(string $pattern): ?string
+    /**
+     * @param string $pattern
+     * @return null|string
+     */
+    public function getDelimiter($pattern)
     {
+        Arguments::string($pattern);
+
         if (strlen($pattern) < 2) {
             return null;
         }
@@ -31,12 +44,20 @@ class DelimiterParser
         return null;
     }
 
-    public function isValidDelimiter(string $character): bool
+    /**
+     * @param string $character
+     * @return bool
+     */
+    public function isValidDelimiter($character)
     {
+        Arguments::string($character);
         return in_array($character, $this->validDelimiters);
     }
 
-    public function getDelimiters(): array
+    /**
+     * @return array
+     */
+    public function getDelimiters()
     {
         return $this->validDelimiters;
     }

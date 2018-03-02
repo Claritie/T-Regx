@@ -1,18 +1,31 @@
 <?php
 namespace CleanRegex\Match;
 
+use CleanRegex\Internal\Arguments;
+
 class ReplaceMatch extends Match
 {
     /** @var int */
     private $offsetModification;
 
-    public function __construct(string $subject, int $index, array $matches, int $offsetModification)
+    /**
+     * @param string $subject
+     * @param int    $index
+     * @param array  $matches
+     * @param int    $offsetModification
+     */
+    public function __construct($subject, $index, array $matches, $offsetModification)
     {
+        Arguments::string($subject)->integer($index)->integer($offsetModification);
+
         parent::__construct($subject, $index, $matches);
         $this->offsetModification = $offsetModification;
     }
 
-    public function modifiedOffset(): int
+    /**
+     * @return int
+     */
+    public function modifiedOffset()
     {
         return $this->offset() + $this->offsetModification;
     }

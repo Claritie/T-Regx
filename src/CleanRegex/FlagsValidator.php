@@ -5,6 +5,7 @@ use CleanRegex\Exception\CleanRegex\FlagNotAllowedException;
 use CleanRegex\Exception\CleanRegex\InternalCleanRegexException;
 use SafeRegex\Exception\SafeRegexException;
 use SafeRegex\preg;
+use CleanRegex\Internal\Arguments;
 
 class FlagsValidator
 {
@@ -26,8 +27,10 @@ class FlagsValidator
      * @return void
      * @throws FlagNotAllowedException
      */
-    public function validate(string $flags): void
+    public function validate($flags)
     {
+        Arguments::string($flags);
+
         if (empty($flags)) {
             return;
         }
@@ -39,7 +42,11 @@ class FlagsValidator
         $this->validateFlags($flags);
     }
 
-    private function containWhitespace(string $flags): bool
+    /**
+     * @param string $flags
+     * @return bool
+     */
+    private function containWhitespace($flags)
     {
         try {
             return preg::match('/\s/', $flags) === 1;
@@ -48,7 +55,12 @@ class FlagsValidator
         }
     }
 
-    private function validateFlags(string $flags): void
+    /**
+     * @param string $flags
+     * @return void
+     * @throws FlagNotAllowedException
+     */
+    private function validateFlags($flags)
     {
         foreach (str_split($flags) as $flag) {
             if (!$this->isAllowed($flag)) {
@@ -57,7 +69,11 @@ class FlagsValidator
         }
     }
 
-    private function isAllowed(string $character): bool
+    /**
+     * @param string $character
+     * @return bool
+     */
+    private function isAllowed($character)
     {
         return in_array($character, $this->flags);
     }

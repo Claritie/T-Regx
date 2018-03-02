@@ -2,21 +2,28 @@
 namespace CleanRegex\Match;
 
 use CleanRegex\Exception\Preg\PatternMatchException;
-use CleanRegex\Internal\Pattern;
+use CleanRegex\Internal\Pattern as InternalPattern;
 use SafeRegex\preg;
+use CleanRegex\Internal\Arguments;
+use SafeRegex\Exception\SafeRegexException;
 
 class MatchPattern
 {
-    private const WHOLE_MATCH = 0;
+    const WHOLE_MATCH = 0;
 
-    /** @var Pattern */
+    /** @var InternalPattern */
     private $pattern;
 
     /** @var string */
     private $subject;
 
-    public function __construct(Pattern $pattern, string $subject)
+    /**
+     * @param InternalPattern $pattern
+     * @param string  $subject
+     */
+    public function __construct(InternalPattern $pattern, $subject)
     {
+        Arguments::string($subject);
         $this->pattern = $pattern;
         $this->subject = $subject;
     }
@@ -25,7 +32,7 @@ class MatchPattern
      * @return array
      * @throws PatternMatchException
      */
-    public function all(): array
+    public function all()
     {
         $matches = [];
         preg::match_all($this->pattern->pattern, $this->subject, $matches);
@@ -33,14 +40,22 @@ class MatchPattern
         return $matches[0];
     }
 
-    public function iterate(callable $callback): void
+    /**
+     * @param callable $callback
+     * @return void
+     */
+    public function iterate(callable $callback)
     {
         foreach ($this->getMatchObjects() as $object) {
             call_user_func($callback, $object);
         }
     }
 
-    public function map(callable $callback): array
+    /**
+     * @param callable $callback
+     * @return array
+     */
+    public function map(callable $callback)
     {
         $results = [];
         foreach ($this->getMatchObjects() as $object) {
@@ -49,7 +64,11 @@ class MatchPattern
         return $results;
     }
 
-    public function first(callable $callback = null): ?string
+    /**
+     * @param callable|null $callback
+     * @return null|string
+     */
+    public function first(callable $callback = null)
     {
         $matches = $this->performMatchAll();
         if (empty($matches[0])) return null;
@@ -65,12 +84,15 @@ class MatchPattern
     /**
      * @return Match[]
      */
-    private function getMatchObjects(): array
+    private function getMatchObjects()
     {
         return $this->constructMatchObjects($this->performMatchAll());
     }
 
-    private function performMatchAll(): array
+    /**
+     * @return array
+     */
+    private function performMatchAll()
     {
         $matches = [];
         preg::match_all($this->pattern->pattern, $this->subject, $matches, PREG_OFFSET_CAPTURE);
@@ -82,7 +104,7 @@ class MatchPattern
      * @param array $matches
      * @return Match[]
      */
-    private function constructMatchObjects(array $matches): array
+    private function constructMatchObjects(array $matches)
     {
         $matchObjects = [];
 
@@ -93,14 +115,22 @@ class MatchPattern
         return $matchObjects;
     }
 
-    public function matches(): bool
+    /**
+     * @return bool
+     * @throws SafeRegexException
+     */
+    public function matches()
     {
         $result = preg::match($this->pattern->pattern, $this->subject);
 
         return $result === 1;
     }
 
-    public function count(): int
+    /**
+     * @return int
+     * @throws SafeRegexException
+     */
+    public function count()
     {
         return preg::match_all($this->pattern->pattern, $this->subject);
     }

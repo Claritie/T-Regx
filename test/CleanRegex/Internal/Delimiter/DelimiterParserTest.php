@@ -27,7 +27,7 @@ class DelimiterParserTest extends TestCase
      * @param string $pattern
      * @param string $delimiter
      */
-    public function shouldGetDelimiter(string $pattern, string $delimiter)
+    public function shouldGetDelimiter($pattern, $delimiter)
     {
         // given
         $delimiterer = new DelimiterParser();
@@ -68,7 +68,7 @@ class DelimiterParserTest extends TestCase
      * @dataProvider notDelimitered
      * @param string $pattern
      */
-    public function shouldNotGetDelimiter(string $pattern)
+    public function shouldNotGetDelimiter($pattern)
     {
         // given
         $delimiterer = new DelimiterParser();
@@ -85,7 +85,7 @@ class DelimiterParserTest extends TestCase
      * @dataProvider notDelimitered
      * @param string $pattern
      */
-    public function shouldNotBeDelimitered(string $pattern)
+    public function shouldNotBeDelimitered($pattern)
     {
         // given
         $delimiterer = new DelimiterParser();
@@ -102,7 +102,7 @@ class DelimiterParserTest extends TestCase
      * @dataProvider delimitered
      * @param string $pattern
      */
-    public function shouldBeDelimitered(string $pattern)
+    public function shouldBeDelimitered($pattern)
     {
         // given
         $delimiterer = new DelimiterParser();

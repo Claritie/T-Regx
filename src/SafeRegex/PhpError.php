@@ -1,6 +1,8 @@
 <?php
 namespace SafeRegex;
 
+use CleanRegex\Internal\Arguments;
+
 class PhpError
 {
     /** @var int */
@@ -12,40 +14,67 @@ class PhpError
     /** @var int */
     private $line;
 
-    public function __construct(int $type, string $message, string $file, int $line)
+    /**
+     * @param int    $type
+     * @param string $message
+     * @param string $file
+     * @param int    $line
+     */
+    public function __construct($type, $message, $file, $line)
     {
+        Arguments::integer($type)->string($message)->string($file)->integer($line);
+
         $this->type = $type;
         $this->message = $message;
         $this->file = $file;
         $this->line = $line;
     }
 
-    public function getType(): int
+    /**
+     * @return int
+     */
+    public function getType()
     {
         return $this->type;
     }
 
-    public function getMessage(): string
+    /**
+     * @return string
+     */
+    public function getMessage()
     {
         return $this->message;
     }
 
-    public function getFile(): string
+    /**
+     * @return string
+     */
+    public function getFile()
     {
         return $this->file;
     }
 
-    public function getLine(): int
+    /**
+     * @return int
+     */
+    public function getLine()
     {
         return $this->line;
     }
 
-    public static function fromArray(array $array): PhpError
+    /**
+     * @param array $array
+     * @return PhpError
+     */
+    public static function fromArray(array $array)
     {
         return new self($array['type'], $array['message'], $array['file'], $array['line']);
     }
 
-    public static function getLast(): ?PhpError
+    /**
+     * @return null|PhpError
+     */
+    public static function getLast()
     {
         $error = error_get_last();
         if ($error === null) {

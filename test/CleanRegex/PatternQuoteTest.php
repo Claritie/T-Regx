@@ -10,7 +10,7 @@ class PatternQuoteTest extends TestCase
      * @dataProvider \Test\DataProviders::invalidPregPatterns()
      * @param string $invalidPattern
      */
-    public function shouldQuoteWithoutException(string $invalidPattern)
+    public function shouldQuoteWithoutException($invalidPattern)
     {
         // when
         (new Pattern($invalidPattern))->quote();

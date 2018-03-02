@@ -2,7 +2,7 @@
 namespace Test\CleanRegex;
 
 use CleanRegex\CountPattern;
-use CleanRegex\Internal\Pattern;
+use CleanRegex\Internal\Pattern as InternalPattern;
 use PHPUnit\Framework\TestCase;
 
 class CountPatternTest extends TestCase
@@ -14,10 +14,10 @@ class CountPatternTest extends TestCase
      * @param $subject
      * @param $expectedCount
      */
-    public function shouldCountMatches(string $pattern, string $subject, int $expectedCount)
+    public function shouldCountMatches($pattern, $subject,$expectedCount)
     {
         // given
-        $countPattern = new CountPattern(new Pattern($pattern), $subject);
+        $countPattern = new CountPattern(new InternalPattern($pattern), $subject);
 
         // when
         $count = $countPattern->count();

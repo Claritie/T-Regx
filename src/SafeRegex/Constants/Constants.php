@@ -1,10 +1,18 @@
 <?php
 namespace SafeRegex\Constants;
 
+use CleanRegex\Internal\Arguments;
+
 abstract class Constants
 {
-    public function getConstant(int $error): string
+    /**
+     * @param int $error
+     * @return string
+     */
+    public function getConstant($error)
     {
+        Arguments::integer($error);
+
         $constants = $this->getConstants();
 
         if (array_key_exists($error, $constants)) {
@@ -14,7 +22,13 @@ abstract class Constants
         return $this->getDefault();
     }
 
-    abstract protected function getConstants(): array;
+    /**
+     * @return array
+     */
+    abstract protected function getConstants();
 
-    abstract protected function getDefault(): string;
+    /**
+     * @return string
+     */
+    abstract protected function getDefault();
 }

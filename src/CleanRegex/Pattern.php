@@ -1,10 +1,13 @@
 <?php
 namespace CleanRegex;
 
+use CleanRegex\Internal\Arguments;
 use CleanRegex\Internal\Delimiter\Delimiterer;
+use CleanRegex\Internal\Delimiter\ExplicitDelimiterRequiredException;
 use CleanRegex\Internal\Pattern as InternalPattern;
 use CleanRegex\Match\MatchPattern;
 use CleanRegex\Replace\ReplacePattern;
+use SafeRegex\Exception\SafeRegexException;
 
 class Pattern
 {
@@ -14,63 +17,122 @@ class Pattern
     /** @var string */
     private $flags;
 
-    public function __construct(string $pattern, string $flags = '')
+    /**
+     * @param string $pattern
+     * @param string $flags
+     */
+    public function __construct($pattern, $flags = '')
     {
+        Arguments::string($pattern)->string($flags);
+
         $this->pattern = $pattern;
         $this->flags = $flags;
     }
 
-    public function match(string $subject): MatchPattern
+    /**
+     * @param string $subject
+     * @return MatchPattern
+     */
+    public function match($subject)
     {
+        Arguments::string($subject);
         return new MatchPattern(new InternalPattern($this->pattern), $subject);
     }
 
-    public function matches(string $subject): bool
+    /**
+     * @param string $subject
+     * @return bool
+     * @throws Exception\CleanRegex\ArgumentNotAllowedException
+     * @throws SafeRegexException
+     */
+    public function matches($subject)
     {
+        Arguments::string($subject);
         return (new MatchesPattern(new InternalPattern($this->pattern), $subject))->matches();
     }
 
-    public function replace(string $subject): ReplacePattern
+    /**
+     * @param string $subject
+     * @return ReplacePattern
+     */
+    public function replace($subject)
     {
+        Arguments::string($subject);
         return new ReplacePattern(new InternalPattern($this->pattern), $subject);
     }
 
-    public function filter(array $haystack): array
+    /**
+     * @param array $haystack
+     * @return array
+     */
+    public function filter(array $haystack)
     {
         return (new FilterArrayPattern(new InternalPattern($this->pattern), $haystack))->filter();
     }
 
-    public function split(string $subject): SplitPattern
+    /**
+     * @param string $subject
+     * @return SplitPattern
+     */
+    public function split($subject)
     {
+        Arguments::string($subject);
+
         return new SplitPattern(new InternalPattern($this->pattern), $subject);
     }
 
-    public function count(string $subject): int
+    /**
+     * @param string $subject
+     * @return int
+     */
+    public function count($subject)
     {
+        Arguments::string($subject);
         return (new CountPattern(new InternalPattern($this->pattern), $subject))->count();
     }
 
-    public function quote(): string
+    /**
+     * @return string
+     */
+    public function quote()
     {
         return (new QuotePattern(new InternalPattern($this->pattern)))->quote();
     }
 
-    public function valid(): bool
+    /**
+     * @return bool
+     */
+    public function valid()
     {
         return (new ValidPattern(new InternalPattern($this->pattern)))->isValid();
     }
 
-    public function delimitered(): string
+    /**
+     * @return string
+     * @throws ExplicitDelimiterRequiredException
+     */
+    public function delimitered()
     {
         return (new Delimiterer())->delimiter($this->pattern);
     }
 
-    public static function of(string $pattern, string $flags = ''): Pattern
+    /**
+     * @param string $pattern
+     * @param string $flags
+     * @return Pattern
+     */
+    public static function of($pattern, $flags = '')
     {
+        Arguments::string($pattern)->string($flags);
         return new Pattern($pattern, $flags);
     }
 
-    public static function pattern(string $pattern, string $flags = ''): Pattern
+    /**
+     * @param string $pattern
+     * @param string $flags
+     * @return Pattern
+     */
+    public static function pattern($pattern, $flags = '')
     {
         return self::of($pattern, $flags);
     }

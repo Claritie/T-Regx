@@ -6,7 +6,10 @@ class ClassWithToString
     /** @var string */
     private $text;
 
-    public function __construct(string $text)
+    /**
+     * @param string $text
+     */
+    public function __construct($text)
     {
         $this->text = $text;
     }

@@ -15,18 +15,24 @@ class GuardedInvocation
      * @param mixed          $result
      * @param Exception|null $exception
      */
-    public function __construct($result, ?Exception $exception)
+    public function __construct($result, Exception $exception = null)
     {
         $this->result = $result;
         $this->exception = $exception;
     }
 
-    public function getException(): ?Exception
+    /**
+     * @return Exception|null
+     */
+    public function getException()
     {
         return $this->exception;
     }
 
-    public function hasException(): bool
+    /**
+     * @return bool
+     */
+    public function hasException()
     {
         return $this->exception !== null;
     }

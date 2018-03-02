@@ -1,6 +1,7 @@
 <?php
 namespace CleanRegex\Replace\Callback;
 
+use CleanRegex\Internal\Arguments;
 use CleanRegex\Match\ReplaceMatch;
 
 class ReplaceCallbackObject
@@ -17,14 +18,21 @@ class ReplaceCallbackObject
     /** @var int */
     private $offsetModification = 0;
 
-    public function __construct(callable $callback, string $subject, array $analyzedPattern)
+    /**
+     * @param callable $callback
+     * @param string   $subject
+     * @param array    $analyzedPattern
+     */
+    public function __construct(callable $callback, $subject, array $analyzedPattern)
     {
+        Arguments::string($subject);
+
         $this->callback = $callback;
         $this->subject = $subject;
         $this->analyzedPattern = $analyzedPattern;
     }
 
-    public function invoke(array $match): string
+    public function invoke(array $match)
     {
         $replacement = call_user_func($this->callback, $this->createMatchObject());
 
@@ -33,7 +41,7 @@ class ReplaceCallbackObject
         return $replacement;
     }
 
-    private function createMatchObject(): ReplaceMatch
+    private function createMatchObject()
     {
         return new ReplaceMatch(
             $this->subject,
@@ -43,12 +51,19 @@ class ReplaceCallbackObject
         );
     }
 
-    public function modifyOffset(string $replacement, string $search): void
+    /**
+     * @param string $replacement
+     * @param string $search
+     */
+    public function modifyOffset($replacement, $search)
     {
         $this->offsetModification += strlen($replacement) - strlen($search);
     }
 
-    public function getCallback(): callable
+    /**
+     * @return callable
+     */
+    public function getCallback()
     {
         return [$this, 'invoke'];
     }

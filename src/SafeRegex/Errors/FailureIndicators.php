@@ -2,6 +2,7 @@
 namespace SafeRegex\Errors;
 
 use CleanRegex\Exception\CleanRegex\InternalCleanRegexException;
+use CleanRegex\Internal\Arguments;
 
 class FailureIndicators
 {
@@ -20,8 +21,15 @@ class FailureIndicators
         'preg_split' => false,
     ];
 
-    public function suspected(string $methodName, $value): bool
+    /**
+     * @param string $methodName
+     * @param        $value
+     * @return bool
+     */
+    public function suspected($methodName, $value)
     {
+        Arguments::string($methodName);
+
         if (in_array($methodName, $this->vague)) {
             return false;
         }

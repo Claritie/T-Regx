@@ -6,7 +6,10 @@ class PatternMatchesException extends PregException
     /** @var int */
     private $lastError;
 
-    public function __construct(int $lastError)
+    /**
+     * @param int $lastError
+     */
+    public function __construct($lastError)
     {
         parent::__construct("Last error code: $lastError");
         $this->lastError = $lastError;

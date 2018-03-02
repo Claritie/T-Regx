@@ -20,7 +20,7 @@ class ExceptionFactoryTest extends TestCase
      * @dataProvider \Test\DataProviders::invalidPregPatterns()
      * @param string $invalidPattern
      */
-    public function testPregErrors(string $invalidPattern)
+    public function testPregErrors($invalidPattern)
     {
         // given
         $result = @preg_match($invalidPattern, '');
@@ -35,10 +35,10 @@ class ExceptionFactoryTest extends TestCase
     /**
      * @test
      * @dataProvider \Test\DataProviders::invalidUtf8Sequences()
-     * @param $description
-     * @param $utf8
+     * @param string $description
+     * @param string $utf8
      */
-    public function test(string $description, string $utf8)
+    public function test($description, $utf8)
     {
         // given
         $result = @preg_match("/pattern/u", $utf8);
@@ -55,7 +55,7 @@ class ExceptionFactoryTest extends TestCase
      * @dataProvider \Test\DataProviders::invalidPregPatterns()
      * @param string $invalidPattern
      */
-    public function testUnexpectedReturnError(string $invalidPattern)
+    public function testUnexpectedReturnError($invalidPattern)
     {
         // given
         $result = @preg_match($invalidPattern, '');

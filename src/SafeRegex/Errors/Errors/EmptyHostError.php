@@ -2,20 +2,19 @@
 namespace SafeRegex\Errors\Errors;
 
 use SafeRegex\Errors\HostError;
-use SafeRegex\Exception\SafeRegexException;
 
 class EmptyHostError implements HostError
 {
-    public function occurred(): bool
+    public function occurred()
     {
         return false;
     }
 
-    public function clear(): void
+    public function clear()
     {
     }
 
-    public function getSafeRegexpException(string $methodName): ?SafeRegexException
+    public function getSafeRegexpException($methodName)
     {
         return null;
     }

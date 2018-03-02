@@ -1,8 +1,8 @@
 <?php
 namespace SafeRegex\Guard;
 
+use CleanRegex\Internal\Arguments;
 use SafeRegex\Errors\ErrorsCleaner;
-use SafeRegex\Exception\SafeRegexException;
 use SafeRegex\ExceptionFactory;
 
 class GuardedInvoker
@@ -12,13 +12,22 @@ class GuardedInvoker
     /** @var string */
     private $methodName;
 
-    public function __construct(string $methodName, callable $callback)
+    /**
+     * @param string   $methodName
+     * @param callable $callback
+     */
+    public function __construct($methodName, callable $callback)
     {
+        Arguments::string($methodName);
+
         $this->callback = $callback;
         $this->methodName = $methodName;
     }
 
-    public function catch(): GuardedInvocation
+    /**
+     * @return GuardedInvocation
+     */
+    public function catched()
     {
         $this->clearObsoleteCompileAndRuntimeErrors();
 
@@ -27,12 +36,12 @@ class GuardedInvoker
         return new GuardedInvocation($result, $this->exception($result));
     }
 
-    private function clearObsoleteCompileAndRuntimeErrors(): void
+    private function clearObsoleteCompileAndRuntimeErrors()
     {
         (new ErrorsCleaner())->clear();
     }
 
-    private function exception($result): ?SafeRegexException
+    private function exception($result)
     {
         return (new ExceptionFactory())->retrieveGlobals($this->methodName, $result);
     }

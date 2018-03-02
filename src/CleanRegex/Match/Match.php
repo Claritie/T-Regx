@@ -3,11 +3,11 @@ namespace CleanRegex\Match;
 
 use CleanRegex\Exception\CleanRegex\NonexistentGroupException;
 use InvalidArgumentException;
+use CleanRegex\Internal\Arguments;
 
 class Match
 {
-    /** @var integer */
-    protected const WHOLE_MATCH = 0;
+    const WHOLE_MATCH = 0;
 
     /** @var string */
     protected $subject;
@@ -16,24 +16,40 @@ class Match
     /** @var array */
     protected $matches;
 
-    public function __construct(string $subject, int $index, array $matches)
+    /**
+     * @param string $subject
+     * @param int    $index
+     * @param array  $matches
+     */
+    public function __construct($subject, $index, array $matches)
     {
+        Arguments::string($subject)->integer($index);
+
         $this->subject = $subject;
         $this->index = $index;
         $this->matches = $matches;
     }
 
-    public function subject(): string
+    /**
+     * @return string
+     */
+    public function subject()
     {
         return $this->subject;
     }
 
-    public function index(): int
+    /**
+     * @return int
+     */
+    public function index()
     {
         return $this->index;
     }
 
-    public function match(): string
+    /**
+     * @return string
+     */
+    public function match()
     {
         list($match, $offset) = $this->matches[self::WHOLE_MATCH][$this->index];
         return $match;
@@ -44,7 +60,7 @@ class Match
      * @return string
      * @throws NonexistentGroupException
      */
-    public function group($nameOrIndex): string
+    public function group($nameOrIndex)
     {
         $this->validateGroupName($nameOrIndex);
 
@@ -56,7 +72,10 @@ class Match
         throw new NonexistentGroupException();
     }
 
-    public function namedGroups(): array
+    /**
+     * @return string[]
+     */
+    public function namedGroups()
     {
         $namedGroups = [];
 
@@ -70,7 +89,10 @@ class Match
         return $namedGroups;
     }
 
-    public function groupNames(): array
+    /**
+     * @return string[]
+     */
+    public function groupNames()
     {
         return array_values(array_filter(array_keys($this->matches), function ($key) {
             return is_string($key);
@@ -81,7 +103,7 @@ class Match
      * @param string|int $nameOrIndex
      * @return bool
      */
-    public function hasGroup($nameOrIndex): bool
+    public function hasGroup($nameOrIndex)
     {
         $this->validateGroupName($nameOrIndex);
 
@@ -92,12 +114,15 @@ class Match
      * @param string|int $nameOrIndex
      * @return bool
      */
-    public function matched($nameOrIndex): bool
+    public function matched($nameOrIndex)
     {
         return $this->matches[$nameOrIndex][$this->index] !== '';
     }
 
-    public function all(): array
+    /**
+     * @return string[]
+     */
+    public function all()
     {
         return array_map(function ($match) {
             list($value, $offset) = $match;
@@ -105,18 +130,24 @@ class Match
         }, $this->matches[self::WHOLE_MATCH]);
     }
 
-    public function offset(): int
+    /**
+     * @return int
+     */
+    public function offset()
     {
         list($value, $offset) = $this->matches[self::WHOLE_MATCH][$this->index];
         return $offset;
     }
 
-    public function __toString(): string
+    /**
+     * @return string
+     */
+    public function __toString()
     {
         return $this->match();
     }
 
-    private function validateGroupName($nameOrIndex): void
+    private function validateGroupName($nameOrIndex)
     {
         if (!is_string($nameOrIndex) && !is_int($nameOrIndex)) {
             throw new InvalidArgumentException("Group index can only be an integer or string");

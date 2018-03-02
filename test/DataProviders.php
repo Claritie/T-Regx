@@ -3,7 +3,10 @@ namespace Test;
 
 class DataProviders
 {
-    public static function invalidPregPatterns(): array
+    /**
+     * @return array
+     */
+    public static function invalidPregPatterns()
     {
         return [
             ['/{2,1}/'],

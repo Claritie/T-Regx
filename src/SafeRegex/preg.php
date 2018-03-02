@@ -1,6 +1,7 @@
 <?php
 namespace SafeRegex;
 
+use CleanRegex\Internal\Arguments;
 use SafeRegex\Constants\PregConstants;
 use SafeRegex\Guard\GuardedExecution;
 
@@ -69,18 +70,30 @@ class preg
         });
     }
 
-    public static function last_error(): int
+    /**
+     * @return int
+     */
+    public static function last_error()
     {
         return preg_last_error();
     }
 
-    public static function last_error_constant(): string
+    /**
+     * @return string
+     */
+    public static function last_error_constant()
     {
         return (new PregConstants())->getConstant(preg_last_error());
     }
 
-    public static function error_constant(int $error): string
+    /**
+     * @param int $error
+     * @return string
+     */
+    public static function error_constant($error)
     {
+        Arguments::integer($error);
+
         return (new PregConstants())->getConstant($error);
     }
 }

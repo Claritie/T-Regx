@@ -10,11 +10,11 @@ class MatchCountPatternTest extends TestCase
     /**
      * @test
      * @dataProvider patternsAndSubjects
-     * @param $pattern
-     * @param $subject
-     * @param $expectedCount
+     * @param string $pattern
+     * @param string $subject
+     * @param int    $expectedCount
      */
-    public function shouldCountMatches(string $pattern, string $subject, int $expectedCount)
+    public function shouldCountMatches($pattern, $subject, $expectedCount)
     {
         // given
         $matchPattern = new MatchPattern(new Pattern($pattern), $subject);

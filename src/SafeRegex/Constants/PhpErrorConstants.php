@@ -3,7 +3,10 @@ namespace SafeRegex\Constants;
 
 class PhpErrorConstants extends Constants
 {
-    protected function getConstants(): array
+    /**
+     * @return array
+     */
+    protected function getConstants()
     {
         return [
             E_ERROR => 'E_ERROR',
@@ -23,7 +26,10 @@ class PhpErrorConstants extends Constants
         ];
     }
 
-    protected function getDefault(): string
+    /**
+     * @return string
+     */
+    protected function getDefault()
     {
         return 'E_UNKNOWN_CODE';
     }

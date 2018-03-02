@@ -3,7 +3,12 @@ namespace SafeRegex\Constants;
 
 class PregConstants extends Constants
 {
-    protected function getConstants(): array
+    const PREG_JIT_STACKLIMIT_ERROR = 6;
+
+    /**
+     * @return array
+     */
+    protected function getConstants()
     {
         return [
             PREG_NO_ERROR => 'PREG_NO_ERROR',
@@ -12,11 +17,15 @@ class PregConstants extends Constants
             PREG_BACKTRACK_LIMIT_ERROR => 'PREG_BACKTRACK_LIMIT_ERROR',
             PREG_RECURSION_LIMIT_ERROR => 'PREG_RECURSION_LIMIT_ERROR',
             PREG_BAD_UTF8_OFFSET_ERROR => 'PREG_BAD_UTF8_OFFSET_ERROR',
-            PREG_JIT_STACKLIMIT_ERROR => 'PREG_JIT_STACKLIMIT_ERROR', // PHP 7.0+
+
+            self::PREG_JIT_STACKLIMIT_ERROR => 'PREG_JIT_STACKLIMIT_ERROR', // PHP 7.0+
         ];
     }
 
-    protected function getDefault(): string
+    /**
+     * @return string
+     */
+    protected function getDefault()
     {
         return 'UNKNOWN_PREG_ERROR';
     }

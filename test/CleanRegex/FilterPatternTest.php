@@ -2,7 +2,7 @@
 namespace Test\CleanRegex;
 
 use CleanRegex\FilterArrayPattern;
-use CleanRegex\Internal\Pattern;
+use CleanRegex\Internal\Pattern as InternalPattern;
 use PHPUnit\Framework\TestCase;
 
 class FilterPatternTest extends TestCase
@@ -14,10 +14,10 @@ class FilterPatternTest extends TestCase
      * @param array $subjects
      * @param array $expected
      */
-    public function shouldFilterArray(string $pattern, array $subjects, array $expected)
+    public function shouldFilterArray($pattern, array $subjects, array $expected)
     {
         // given
-        $filterArrayPattern = new FilterArrayPattern(new Pattern($pattern), $subjects);
+        $filterArrayPattern = new FilterArrayPattern(new InternalPattern($pattern), $subjects);
 
         // when
         $filtered = $filterArrayPattern->filter();

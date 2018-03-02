@@ -26,7 +26,7 @@ class DelimitererTest extends TestCase
      * @param string $pattern
      * @param string $expectedResult
      */
-    public function shouldDelimiterPattern(string $pattern, string $expectedResult)
+    public function shouldDelimiterPattern($pattern, $expectedResult)
     {
         // given
         $delimiterer = new Delimiterer();
@@ -55,7 +55,7 @@ class DelimitererTest extends TestCase
      * @dataProvider alreadyDelimitered
      * @param string $pattern
      */
-    public function shouldDelimiterAlreadyDelimitered(string $pattern)
+    public function shouldDelimiterAlreadyDelimitered($pattern)
     {
         // given
         $delimiterer = new Delimiterer();

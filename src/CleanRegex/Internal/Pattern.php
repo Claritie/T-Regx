@@ -14,8 +14,14 @@ class Pattern
     /** @var string */
     public $originalPattern;
 
-    public function __construct(string $pattern, string $flags = '')
+    /**
+     * @param string $pattern
+     * @param string $flags
+     */
+    public function __construct($pattern, $flags = '')
     {
+        Arguments::string($pattern)->string($flags);
+
         $this->pattern = (new Delimiterer())->delimiter($pattern);
         $this->flags = $flags;
         $this->originalPattern = $pattern;
