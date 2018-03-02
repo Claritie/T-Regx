@@ -1,23 +1,20 @@
 <?php
 namespace Test\SafeRegex;
 
+use Closure;
 use Exception;
 use PHPUnit\Framework\TestCase;
-use SafeRegex\Exception\CompileSafeRegexException;
-use SafeRegex\Exception\RuntimeSafeRegexException;
 use SafeRegex\Guard\GuardedExecution;
 use Test\Warnings;
 
 class GuardedExecutionTest extends TestCase
 {
-    use Warnings;
-
     /**
      * @test
      * @dataProvider possibleObsoleteWarnings
-     * @param callable $obsoleteWarning
+     * @param Closure $obsoleteWarning
      */
-    public function shouldIgnorePreviousWarnings(callable $obsoleteWarning)
+    public function shouldIgnorePreviousWarnings(Closure $obsoleteWarning)
     {
         // given
         call_user_func($obsoleteWarning);
@@ -34,14 +31,14 @@ class GuardedExecutionTest extends TestCase
 
     public function possibleObsoleteWarnings()
     {
-        return [
-            [function () {
-                $this->causeRuntimeWarning();
-            }],
-            [function () {
-                $this->causeCompileWarning();
-            }],
-        ];
+        return array(
+            array(function () {
+                Warnings::causeRuntimeWarning();
+            }),
+            array(function () {
+                Warnings::causeCompileWarning();
+            }),
+        );
     }
 
     /**
@@ -51,13 +48,13 @@ class GuardedExecutionTest extends TestCase
     {
         // when
         $invocation = GuardedExecution::catched('preg_match', function () {
-            $this->causeRuntimeWarning();
+            Warnings::causeRuntimeWarning();
             return false;
         });
 
         // then
         $this->assertTrue($invocation->hasException());
-        $this->assertInstanceOf(RuntimeSafeRegexException::class, $invocation->getException());
+        $this->assertInstanceOf('\SafeRegex\Exception\RuntimeSafeRegexException', $invocation->getException());
     }
 
     /**
@@ -67,13 +64,13 @@ class GuardedExecutionTest extends TestCase
     {
         // when
         $invocation = GuardedExecution::catched('preg_match', function () {
-            $this->causeCompileWarning();
+            Warnings::causeCompileWarning();
             return false;
         });
 
         // then
         $this->assertTrue($invocation->hasException());
-        $this->assertInstanceOf(CompileSafeRegexException::class, $invocation->getException());
+        $this->assertInstanceOf('\SafeRegex\Exception\CompileSafeRegexException', $invocation->getException());
     }
 
     /**
@@ -82,11 +79,11 @@ class GuardedExecutionTest extends TestCase
     public function shouldCatchRuntimeWarningWhenInvoking()
     {
         // then
-        $this->expectException(RuntimeSafeRegexException::class);
+        $this->expectException('\SafeRegex\Exception\RuntimeSafeRegexException');
 
         // when
         GuardedExecution::invoke('preg_match', function () {
-            $this->causeRuntimeWarning();
+            Warnings::causeRuntimeWarning();
             return false;
         });
     }
@@ -97,11 +94,11 @@ class GuardedExecutionTest extends TestCase
     public function shouldCatchCompileWarningWhenInvoking()
     {
         // then
-        $this->expectException(CompileSafeRegexException::class);
+        $this->expectException('\SafeRegex\Exception\CompileSafeRegexException');
 
         // when
         GuardedExecution::invoke('preg_match', function () {
-            $this->causeCompileWarning();
+            Warnings::causeCompileWarning();
             return false;
         });
     }
@@ -112,7 +109,7 @@ class GuardedExecutionTest extends TestCase
     public function shouldRethrowException()
     {
         // then
-        $this->expectException(Exception::class);
+        $this->expectException('Exception');
         $this->expectExceptionMessage('Rethrown exception');
 
         // when
@@ -147,5 +144,19 @@ class GuardedExecutionTest extends TestCase
 
         // then
         $this->assertEquals(13, $invocation->getResult());
+    }
+
+    function expectException($className)
+    {
+        if (method_exists($this, 'setExpectedException')) {
+            $this->setExpectedException($className);
+        } else {
+            parent::expectException($className);
+        }
+    }
+
+    function expectExceptionMessage($message)
+    {
+        // ignore
     }
 }

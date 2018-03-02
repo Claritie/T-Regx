@@ -9,7 +9,7 @@ use CleanRegex\Internal\Arguments;
 
 class FlagsValidator
 {
-    private $flags = [
+    private $flags = array(
         'i', // PCRE_CASELESS
         'm', // PCRE_MULTILINE
         'x', // PCRE_EXTENDED
@@ -20,7 +20,7 @@ class FlagsValidator
         'A', // PCRE_ANCHORED
         'D', // PCRE_DOLLAR_ENDONLY
         'S', // Studying a pattern, before executing
-    ];
+    );
 
     /**
      * @param string $flags

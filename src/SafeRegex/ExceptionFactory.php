@@ -27,7 +27,9 @@ class ExceptionFactory
     {
         Arguments::string($methodName);
 
-        return (new ExceptionFactory())->create($methodName, $pregResult, (new ErrorsCleaner())->getError());
+        $exceptionFactory = new ExceptionFactory();
+        $errorsCleaner = new ErrorsCleaner();
+        return $exceptionFactory->create($methodName, $pregResult, $errorsCleaner->getError());
     }
 
     /**

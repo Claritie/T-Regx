@@ -12,8 +12,11 @@ class PatternQuoteTest extends TestCase
      */
     public function shouldQuoteWithoutException($invalidPattern)
     {
+        // given
+        $pattern = new Pattern($invalidPattern);
+
         // when
-        (new Pattern($invalidPattern))->quote();
+        $pattern->quote();
 
         // then
         $this->assertTrue(true);

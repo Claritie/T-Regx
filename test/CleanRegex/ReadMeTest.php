@@ -47,7 +47,7 @@ class ReadMeTest extends TestCase
         $result = pattern('\d+')->match('192 168 172 14')->all();
 
         // then
-        $this->assertEquals(['192', '168', '172', '14'], $result);
+        $this->assertEquals(array('192', '168', '172', '14'), $result);
     }
 
     /**
@@ -86,26 +86,31 @@ class ReadMeTest extends TestCase
      */
     public function iterate()
     {
-        // when + then
+        // given
+        /** @var Match $match */
+        $match = null;
+
+        // when
         pattern('\d+')
             ->match('192 168 172 14')
-            ->iterate(function (Match $match) {
-
-                if ($match->match() != '172') return;
-
-                // gets the match
-                $this->assertEquals("172", $match->match());
-                $this->assertEquals("172", (string)$match);
-
-                // gets the match offset
-                $this->assertEquals(8, $match->offset());
-
-                // gets the group index
-                $this->assertEquals(2, $match->index());
-
-                // gets other groups
-                $this->assertEquals(['192', '168', '172', '14'], $match->all());
+            ->iterate(function (Match $m) use (&$match) {
+                if ($m->match() != '172') return;
+                $match = $m;
             });
+
+        // then
+        // gets the match
+        $this->assertEquals("172", $match->match());
+        $this->assertEquals("172", (string)$match);
+
+        // gets the match offset
+        $this->assertEquals(8, $match->offset());
+
+        // gets the group index
+        $this->assertEquals(2, $match->index());
+
+        // gets other groups
+        $this->assertEquals(array('192', '168', '172', '14'), $match->all());
     }
 
     /**
@@ -121,7 +126,7 @@ class ReadMeTest extends TestCase
             });
 
         // then
-        $this->assertEquals([384, 336, 344, 28], $map);
+        $this->assertEquals(array(384, 336, 344, 28), $map);
     }
 
     /**
@@ -188,16 +193,16 @@ class ReadMeTest extends TestCase
     public function filterArray()
     {
         // when
-        $result = pattern('^[A-Z][a-z]+$')->filter([
+        $result = pattern('^[A-Z][a-z]+$')->filter(array(
             'Mark',
             'Robert',
             'asdczx',
             'Jane',
             'Stan123'
-        ]);
+        ));
 
         // then
-        $this->assertEquals(['Mark', 'Robert', 'Jane'], $result);
+        $this->assertEquals(array('Mark', 'Robert', 'Jane'), $result);
     }
 
     /**
@@ -205,35 +210,41 @@ class ReadMeTest extends TestCase
      */
     public function firstMatchWithDetail()
     {
+        // given
+        /** @var Match $match */
+        $match = null;
+
         // when
         pattern('(?<capital>[A-Z])(?<lowercase>[a-z]+)')
             ->match('Robert Likes Trains')
-            ->first(function (Match $match) {
+            ->first(function (Match $m) use (&$match) {
 
-                // then
-                $this->assertEquals('Robert', $match->match());
-                $this->assertEquals('Robert', (string)$match);
-
-                $this->assertEquals('Robert Likes Trains', $match->subject());
-
-                $this->assertEquals(0, $match->index());
-                $this->assertEquals(0, $match->offset());
-
-                $this->assertEquals(['Robert', 'Likes', 'Trains'], $match->all());
-
-                $this->assertEquals('R', $match->group('capital'));
-                $this->assertEquals('R', $match->group(1));
-                $this->assertEquals('obert', $match->group('lowercase'));
-                $this->assertEquals('obert', $match->group(2));
-
-                $this->assertEquals(['capital', 'lowercase'], $match->groupNames());
-
-                $this->assertEquals(true, $match->hasGroup('capital'));
-
-                $this->assertEquals(true, $match->matched('capital'));
-
-                $this->assertEquals(['capital' => 'R', 'lowercase' => 'obert'], $match->namedGroups());
+                $match = $m;
             });
+
+        // then
+        $this->assertEquals('Robert', $match->match());
+        $this->assertEquals('Robert', (string)$match);
+
+        $this->assertEquals('Robert Likes Trains', $match->subject());
+
+        $this->assertEquals(0, $match->index());
+        $this->assertEquals(0, $match->offset());
+
+        $this->assertEquals(array('Robert', 'Likes', 'Trains'), $match->all());
+
+        $this->assertEquals('R', $match->group('capital'));
+        $this->assertEquals('R', $match->group(1));
+        $this->assertEquals('obert', $match->group('lowercase'));
+        $this->assertEquals('obert', $match->group(2));
+
+        $this->assertEquals(array('capital', 'lowercase'), $match->groupNames());
+
+        $this->assertEquals(true, $match->hasGroup('capital'));
+
+        $this->assertEquals(true, $match->matched('capital'));
+
+        $this->assertEquals(array('capital' => 'R', 'lowercase' => 'obert'), $match->namedGroups());
     }
 
     /**
@@ -307,7 +318,7 @@ class ReadMeTest extends TestCase
         $instance = \CleanRegex\Pattern::of('test');
 
         // then
-        $this->assertInstanceOf(\CleanRegex\Pattern::class, $instance);
+        $this->assertInstanceOf('\CleanRegex\Pattern', $instance);
         $this->assertEquals('test', $instance->pattern);
     }
 }

@@ -4,6 +4,7 @@ namespace CleanRegex\Replace;
 use CleanRegex\Internal\Arguments;
 use CleanRegex\Internal\Pattern as InternalPattern;
 use CleanRegex\Replace\Callback\ReplacePatternCallbackInvoker;
+use Closure;
 use SafeRegex\preg;
 
 class ReplacePattern
@@ -38,11 +39,12 @@ class ReplacePattern
     }
 
     /**
-     * @param callable $callback
+     * @param Closure $callback
      * @return string
      */
-    public function callback(callable $callback)
+    public function callback(Closure $callback)
     {
-        return (new ReplacePatternCallbackInvoker($this->pattern, $this->subject))->invoke($callback);
+        $replacePatternCallbackInvoker = new ReplacePatternCallbackInvoker($this->pattern, $this->subject);
+        return $replacePatternCallbackInvoker->invoke($callback);
     }
 }

@@ -22,7 +22,8 @@ class Pattern
     {
         Arguments::string($pattern)->string($flags);
 
-        $this->pattern = (new Delimiterer())->delimiter($pattern);
+        $delimiterer = new Delimiterer();
+        $this->pattern = $delimiterer->delimiter($pattern);
         $this->flags = $flags;
         $this->originalPattern = $pattern;
     }

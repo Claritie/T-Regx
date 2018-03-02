@@ -2,6 +2,7 @@
 namespace CleanRegex\Replace\Callback;
 
 use CleanRegex\Exception\Preg\PatternReplaceException;
+use Closure;
 use SafeRegex\preg;
 use CleanRegex\Internal\Arguments;
 use CleanRegex\Internal\Pattern as InternalPattern;
@@ -26,11 +27,11 @@ class ReplacePatternCallbackInvoker
     }
 
     /**
-     * @param callable $callback
+     * @param Closure $callback
      * @return string
      * @throws PatternReplaceException
      */
-    public function invoke(callable $callback)
+    public function invoke(Closure $callback)
     {
         $result = $this->performReplaceCallback($callback);
 
@@ -42,15 +43,17 @@ class ReplacePatternCallbackInvoker
     }
 
     /**
-     * @param callable $callback
+     * @param Closure $callback
      * @return string
      * @throws \SafeRegex\Exception\SafeRegexException
      */
-    private function performReplaceCallback(callable $callback)
+    private function performReplaceCallback(Closure $callback)
     {
         $object = new ReplaceCallbackObject($callback, $this->subject, $this->analyzePattern());
 
-        return preg::replace_callback($this->pattern->pattern, $object->getCallback(), $this->subject);
+        return preg::replace_callback($this->pattern->pattern, function (array $matches) use ($object) {
+            return $object->invoke($matches);
+        }, $this->subject);
     }
 
     /**
@@ -59,7 +62,7 @@ class ReplacePatternCallbackInvoker
      */
     private function analyzePattern()
     {
-        $matches = [];
+        $matches = array();
         preg::match_all($this->pattern->pattern, $this->subject, $matches, PREG_OFFSET_CAPTURE);
 
         return $matches;

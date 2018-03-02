@@ -2,6 +2,7 @@
 namespace SafeRegex\Guard;
 
 use CleanRegex\Internal\Arguments;
+use Closure;
 use SafeRegex\Errors\ErrorsCleaner;
 use SafeRegex\ExceptionFactory;
 
@@ -13,10 +14,10 @@ class GuardedInvoker
     private $methodName;
 
     /**
-     * @param string   $methodName
-     * @param callable $callback
+     * @param string  $methodName
+     * @param Closure $callback
      */
-    public function __construct($methodName, callable $callback)
+    public function __construct($methodName, Closure $callback)
     {
         Arguments::string($methodName);
 
@@ -38,11 +39,13 @@ class GuardedInvoker
 
     private function clearObsoleteCompileAndRuntimeErrors()
     {
-        (new ErrorsCleaner())->clear();
+        $errorsCleaner = new ErrorsCleaner();
+        $errorsCleaner->clear();
     }
 
     private function exception($result)
     {
-        return (new ExceptionFactory())->retrieveGlobals($this->methodName, $result);
+        $exceptionFactory = new ExceptionFactory();
+        return $exceptionFactory->retrieveGlobals($this->methodName, $result);
     }
 }

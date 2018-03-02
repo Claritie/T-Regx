@@ -77,7 +77,7 @@ class Match
      */
     public function namedGroups()
     {
-        $namedGroups = [];
+        $namedGroups = array();
 
         foreach ($this->matches as $groupNameOrIndex => $match) {
             if (is_string($groupNameOrIndex)) {

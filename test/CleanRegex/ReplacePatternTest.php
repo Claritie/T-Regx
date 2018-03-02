@@ -1,6 +1,7 @@
 <?php
 namespace CleanRegex;
 
+use CleanRegex\Match\Match;
 use CleanRegex\Match\ReplaceMatch;
 use PHPUnit\Framework\TestCase;
 
@@ -67,16 +68,19 @@ class ReplacePatternTest extends TestCase
         $pattern = 'http://(?<name>[a-z]+)\.(?<domain>com|org)';
         $subject = 'Links: http://google.com and http://other.org. and again http://danon.com';
 
+        /** @var ReplaceMatch $match */
+        $match = null;
+
         // when
         pattern($pattern)
             ->replace($subject)
-            ->callback(function (ReplaceMatch $match) {
-
-                // then
-                $this->assertEquals(['http://google.com', 'http://other.org', 'http://danon.com'], $match->all());
-
+            ->callback(function (ReplaceMatch $m) use (&$match) {
+                $match = $m;
                 return '';
             });
+
+        // then
+        $this->assertEquals(array('http://google.com', 'http://other.org', 'http://danon.com'), $match->all());
     }
 
     /**
@@ -88,7 +92,7 @@ class ReplacePatternTest extends TestCase
         $pattern = 'http://(?<name>[a-z]+)\.(?<domain>com|org)';
         $subject = 'Links: http://google.com and http://other.org. and again http://danon.com';
 
-        $offsets = [];
+        $offsets = array();
 
         $callback = function (ReplaceMatch $match) use (&$offsets) {
             $offsets[] = $match->offset();
@@ -99,7 +103,7 @@ class ReplacePatternTest extends TestCase
         pattern($pattern)->replace($subject)->callback($callback);
 
         // then
-        $this->assertEquals([7, 29, 57], $offsets);
+        $this->assertEquals(array(7, 29, 57), $offsets);
     }
 
     /**
@@ -111,7 +115,7 @@ class ReplacePatternTest extends TestCase
         $pattern = 'http://(?<name>[a-z]+)\.(?<domain>com|org)';
         $subject = 'Links: http://google.com and http://other.org. and again http://danon.com';
 
-        $offsets = [];
+        $offsets = array();
 
         $callback = function (ReplaceMatch $match) use (&$offsets) {
             $offsets[] = $match->modifiedOffset();
@@ -122,6 +126,6 @@ class ReplacePatternTest extends TestCase
         pattern($pattern)->replace($subject)->callback($callback);
 
         // then
-        $this->assertEquals([7, 13, 26], $offsets);
+        $this->assertEquals(array(7, 13, 26), $offsets);
     }
 }

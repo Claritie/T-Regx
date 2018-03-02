@@ -20,8 +20,9 @@ class ValidPattern
      */
     public function isValid()
     {
-        $hadError = GuardedExecution::silenced('preg_match', function () {
-            return @preg_match($this->pattern->originalPattern, null);
+        $pattern = $this->pattern;
+        $hadError = GuardedExecution::silenced('preg_match', function () use ($pattern) {
+            return @preg_match($pattern->originalPattern, null);
         });
 
         return $hadError === false;
@@ -42,7 +43,7 @@ class ValidPattern
             return "$argument";
         }
 
-        if (is_callable([$argument, '__toString'])) {
+        if (is_callable(array($argument, '__toString'))) {
             return (string)$argument;
         }
 

@@ -10,7 +10,7 @@ class PregConstants extends Constants
      */
     protected function getConstants()
     {
-        return [
+        return array(
             PREG_NO_ERROR => 'PREG_NO_ERROR',
             PREG_BAD_UTF8_ERROR => 'PREG_BAD_UTF8_ERROR',
             PREG_INTERNAL_ERROR => 'PREG_INTERNAL_ERROR',
@@ -19,7 +19,7 @@ class PregConstants extends Constants
             PREG_BAD_UTF8_OFFSET_ERROR => 'PREG_BAD_UTF8_OFFSET_ERROR',
 
             self::PREG_JIT_STACKLIMIT_ERROR => 'PREG_JIT_STACKLIMIT_ERROR', // PHP 7.0+
-        ];
+        );
     }
 
     /**

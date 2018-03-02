@@ -40,7 +40,8 @@ class CompileSafeRegexException extends SafeRegexException
      */
     public function getErrorName()
     {
-        return (new PhpErrorConstants())->getConstant($this->error->getType());
+        $phpErrorConstants = new PhpErrorConstants();
+        return $phpErrorConstants->getConstant($this->error->getType());
     }
 
     /**

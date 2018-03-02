@@ -12,8 +12,8 @@ class ArraysTest extends TestCase
     public function shouldBeEqual()
     {
         // given
-        $array1 = ['a' => 12, 'b' => 69];
-        $array2 = ['a' => 12, 'b' => 69];
+        $array1 = array('a' => 12, 'b' => 69);
+        $array2 = array('a' => 12, 'b' => 69);
 
         // when
         $result = Arrays::equal($array1, $array2);
@@ -28,8 +28,8 @@ class ArraysTest extends TestCase
     public function shouldNotBeEqualWithDifferentKeys()
     {
         // given
-        $array1 = ['a' => 12, 'b' => 69];
-        $array2 = ['c' => 12, 'b' => 69];
+        $array1 = array('a' => 12, 'b' => 69);
+        $array2 = array('c' => 12, 'b' => 69);
 
         // when
         $result = Arrays::equal($array1, $array2);
@@ -44,8 +44,8 @@ class ArraysTest extends TestCase
     public function shouldNotBeEqualWithDifferentValues()
     {
         // given
-        $array1 = ['a' => 12, 'b' => 69];
-        $array2 = ['c' => 12, 'b' => 70];
+        $array1 = array('a' => 12, 'b' => 69);
+        $array2 = array('c' => 12, 'b' => 70);
 
         // when
         $result = Arrays::equal($array1, $array2);
@@ -60,8 +60,8 @@ class ArraysTest extends TestCase
     public function shouldBeEqualDifferentOrder()
     {
         // given
-        $array1 = ['a' => 12, 'b' => 69];
-        $array2 = ['b' => 70, 'a' => 12];
+        $array1 = array('a' => 12, 'b' => 69);
+        $array2 = array('b' => 70, 'a' => 12);
 
         // when
         $result = Arrays::equal($array1, $array2);

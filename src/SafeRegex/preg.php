@@ -2,6 +2,7 @@
 namespace SafeRegex;
 
 use CleanRegex\Internal\Arguments;
+use Closure;
 use SafeRegex\Constants\PregConstants;
 use SafeRegex\Guard\GuardedExecution;
 
@@ -28,7 +29,7 @@ class preg
         });
     }
 
-    public static function replace_callback($pattern, callable $callback, $subject, $limit = -1, &$count = null)
+    public static function replace_callback($pattern, Closure $callback, $subject, $limit = -1, &$count = null)
     {
         return GuardedExecution::invoke('preg_replace_callback', function () use ($pattern, $limit, $subject, $callback, &$count) {
             return @preg_replace_callback($pattern, $callback, $subject, $limit, $count);
@@ -83,7 +84,8 @@ class preg
      */
     public static function last_error_constant()
     {
-        return (new PregConstants())->getConstant(preg_last_error());
+        $pregConstants = new PregConstants();
+        return $pregConstants->getConstant(preg_last_error());
     }
 
     /**
@@ -94,6 +96,7 @@ class preg
     {
         Arguments::integer($error);
 
-        return (new PregConstants())->getConstant($error);
+        $pregConstants = new PregConstants();
+        return $pregConstants->getConstant($error);
     }
 }

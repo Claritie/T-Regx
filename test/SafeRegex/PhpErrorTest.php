@@ -24,15 +24,18 @@ class PhpErrorTest extends TestCase
         $this->assertEquals(12, $line);
     }
 
+    /**
+     *
+     */
     public function testStaticMethodFactory()
     {
         // given
-        $array = [
+        $array = array(
             'type' => E_WARNING,
             'message' => 'Something failed',
             'file' => 'file.php',
             'line' => 12
-        ];
+        );
 
         // when
         $error = PhpError::fromArray($array);

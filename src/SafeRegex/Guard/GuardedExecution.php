@@ -3,18 +3,20 @@
 namespace SafeRegex\Guard;
 
 use CleanRegex\Internal\Arguments;
+use Closure;
 
 class GuardedExecution
 {
     /**
-     * @param string   $methodName
-     * @param callable $callback
+     * @param string  $methodName
+     * @param Closure $callback
      * @return mixed
      * @throws \Exception
      */
-    public static function invoke($methodName, callable $callback)
+    public static function invoke($methodName, Closure $callback)
     {
-        $invocation = (new GuardedInvoker($methodName, $callback))->catched();
+        $guardedInvoker = new GuardedInvoker($methodName, $callback);
+        $invocation = $guardedInvoker->catched();
         if ($invocation->hasException()) {
             throw $invocation->getException();
         }
@@ -22,27 +24,28 @@ class GuardedExecution
     }
 
     /**
-     * @param string   $methodName
-     * @param callable $callback
+     * @param string  $methodName
+     * @param Closure $callback
      * @return GuardedInvocation
      */
-    public static function catched($methodName, callable $callback)
+    public static function catched($methodName, Closure $callback)
     {
         Arguments::string($methodName);
 
-        return (new GuardedInvoker($methodName, $callback))->catched();
+        $guardedInvoker = new GuardedInvoker($methodName, $callback);
+        return $guardedInvoker->catched();
     }
 
     /**
-     * @param string   $methodName
-     * @param callable $callback
+     * @param string  $methodName
+     * @param Closure $callback
      * @return bool
      */
-    public static function silenced($methodName, callable $callback)
+    public static function silenced($methodName, Closure $callback)
     {
         Arguments::string($methodName);
 
-        $invocation = (new GuardedInvoker($methodName, $callback))->catched();
-        return $invocation->hasException();
+        $guardedInvoker = new GuardedInvoker($methodName, $callback);
+        return $guardedInvoker->catched()->hasException();
     }
 }

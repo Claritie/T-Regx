@@ -21,8 +21,10 @@ class FilterArrayPattern
      */
     public function filter()
     {
-        return array_values(array_filter($this->array, function ($element) {
-            return (new MatchesPattern($this->pattern, $element))->matches();
+        $pattern = $this->pattern;
+        return array_values(array_filter($this->array, function ($element) use ($pattern) {
+            $matchesPattern = new MatchesPattern($pattern, $element);
+            return $matchesPattern->matches();
         }));
     }
 }

@@ -3,6 +3,7 @@ namespace CleanRegex\Replace\Callback;
 
 use CleanRegex\Internal\Arguments;
 use CleanRegex\Match\ReplaceMatch;
+use Closure;
 
 class ReplaceCallbackObject
 {
@@ -19,11 +20,11 @@ class ReplaceCallbackObject
     private $offsetModification = 0;
 
     /**
-     * @param callable $callback
-     * @param string   $subject
-     * @param array    $analyzedPattern
+     * @param Closure $callback
+     * @param string  $subject
+     * @param array   $analyzedPattern
      */
-    public function __construct(callable $callback, $subject, array $analyzedPattern)
+    public function __construct(Closure $callback, $subject, array $analyzedPattern)
     {
         Arguments::string($subject);
 
@@ -58,13 +59,5 @@ class ReplaceCallbackObject
     public function modifyOffset($replacement, $search)
     {
         $this->offsetModification += strlen($replacement) - strlen($search);
-    }
-
-    /**
-     * @return callable
-     */
-    public function getCallback()
-    {
-        return [$this, 'invoke'];
     }
 }

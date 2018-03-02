@@ -3,16 +3,14 @@ namespace Test\SafeRegex;
 
 use PHPUnit\Framework\TestCase;
 use SafeRegex\Errors\ErrorsCleaner;
-use SafeRegex\Exception\CompileSafeRegexException;
-use SafeRegex\Exception\RuntimeSafeRegexException;
-use SafeRegex\Exception\SuspectedReturnSafeRegexException;
 use SafeRegex\ExceptionFactory;
 
 class ExceptionFactoryTest extends TestCase
 {
     protected function setUp()
     {
-        (new ErrorsCleaner())->clear();
+        $errorsCleaner = new ErrorsCleaner();
+        $errorsCleaner->clear();
     }
 
     /**
@@ -24,12 +22,13 @@ class ExceptionFactoryTest extends TestCase
     {
         // given
         $result = @preg_match($invalidPattern, '');
+        $exceptionFactory = new ExceptionFactory();
 
         // when
-        $exception = (new ExceptionFactory())->retrieveGlobals('preg_match', $result);
+        $exception = $exceptionFactory->retrieveGlobals('preg_match', $result);
 
         // then
-        $this->assertInstanceOf(CompileSafeRegexException::class, $exception);
+        $this->assertInstanceOf('\SafeRegex\Exception\CompileSafeRegexException', $exception);
     }
 
     /**
@@ -41,13 +40,14 @@ class ExceptionFactoryTest extends TestCase
     public function test($description, $utf8)
     {
         // given
+        $exceptionFactory = new ExceptionFactory();
         $result = @preg_match("/pattern/u", $utf8);
 
         // when
-        $exception = (new ExceptionFactory())->retrieveGlobals('preg_match', $result);
+        $exception = $exceptionFactory->retrieveGlobals('preg_match', $result);
 
         // then
-        $this->assertInstanceOf(RuntimeSafeRegexException::class, $exception);
+        $this->assertInstanceOf('\SafeRegex\Exception\RuntimeSafeRegexException', $exception);
     }
 
     /**
@@ -59,12 +59,14 @@ class ExceptionFactoryTest extends TestCase
     {
         // given
         $result = @preg_match($invalidPattern, '');
-        (new ErrorsCleaner)->clear();
+        $exceptionFactory = new ExceptionFactory();
+        $errorsCleaner = new ErrorsCleaner;
+        $errorsCleaner->clear();
 
         // when
-        $exception = (new ExceptionFactory())->retrieveGlobals('preg_match', $result);
+        $exception = $exceptionFactory->retrieveGlobals('preg_match', $result);
 
         // then
-        $this->assertInstanceOf(SuspectedReturnSafeRegexException::class, $exception);
+        $this->assertInstanceOf('\SafeRegex\Exception\SuspectedReturnSafeRegexException', $exception);
     }
 }

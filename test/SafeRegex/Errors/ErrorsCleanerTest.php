@@ -8,8 +8,6 @@ use Test\Warnings;
 
 class ErrorsCleanerTest extends TestCase
 {
-    use Warnings;
-
     /**
      * @test
      */
@@ -21,7 +19,7 @@ class ErrorsCleanerTest extends TestCase
 
         // given
         $cleaner = new ErrorsCleaner();
-        $this->causeCompileWarning();
+        Warnings::causeCompileWarning();
 
         // when
         $cleaner->clear();
@@ -42,7 +40,7 @@ class ErrorsCleanerTest extends TestCase
 
         // given
         $cleaner = new ErrorsCleaner();
-        $this->causeCompileWarning();
+        Warnings::causeCompileWarning();
 
         // when
         $cleaner->clear();
@@ -60,7 +58,7 @@ class ErrorsCleanerTest extends TestCase
     {
         // given
         $cleaner = new ErrorsCleaner();
-        $this->causeRuntimeWarning();
+        Warnings::causeRuntimeWarning();
 
         // when
         $cleaner->clear();

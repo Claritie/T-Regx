@@ -28,22 +28,22 @@ class FilterPatternTest extends TestCase
 
     public function patternsAndSubjects()
     {
-        return [
-            [
+        return array(
+            array(
                 '/dog/',
-                ['dog', 'dogs', 'underdog'],
-                ['dog', 'dogs', 'underdog'],
-            ],
-            [
+                array('dog', 'dogs', 'underdog'),
+                array('dog', 'dogs', 'underdog'),
+            ),
+            array(
                 '/^[aoe]$/',
-                ['a', 'b', 'o'],
-                ['a', 'o']
-            ],
-            [
+                array('a', 'b', 'o'),
+                array('a', 'o')
+            ),
+            array(
                 '/^.$/',
-                ['cat', 'dog', 'John Wick'],
-                [],
-            ],
-        ];
+                array('cat', 'dog', 'John Wick'),
+                array(),
+            ),
+        );
     }
 }

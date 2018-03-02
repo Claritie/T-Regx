@@ -6,12 +6,12 @@ use CleanRegex\Internal\Arguments;
 
 class FailureIndicators
 {
-    private $vague = [
+    private $vague = array(
         'preg_grep',
         'preg_quote',
-    ];
+    );
 
-    private $indicators = [
+    private $indicators = array(
         'preg_match' => false,
         'preg_match_all' => false,
         'preg_replace' => null,
@@ -19,7 +19,7 @@ class FailureIndicators
         'preg_replace_callback' => null,
         'preg_replace_callback_array' => null,
         'preg_split' => false,
-    ];
+    );
 
     /**
      * @param string $methodName

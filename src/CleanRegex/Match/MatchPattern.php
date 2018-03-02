@@ -3,6 +3,7 @@ namespace CleanRegex\Match;
 
 use CleanRegex\Exception\Preg\PatternMatchException;
 use CleanRegex\Internal\Pattern as InternalPattern;
+use Closure;
 use SafeRegex\preg;
 use CleanRegex\Internal\Arguments;
 use SafeRegex\Exception\SafeRegexException;
@@ -34,17 +35,17 @@ class MatchPattern
      */
     public function all()
     {
-        $matches = [];
+        $matches = array();
         preg::match_all($this->pattern->pattern, $this->subject, $matches);
 
         return $matches[0];
     }
 
     /**
-     * @param callable $callback
+     * @param Closure $callback
      * @return void
      */
-    public function iterate(callable $callback)
+    public function iterate(Closure $callback)
     {
         foreach ($this->getMatchObjects() as $object) {
             call_user_func($callback, $object);
@@ -52,12 +53,12 @@ class MatchPattern
     }
 
     /**
-     * @param callable $callback
+     * @param Closure $callback
      * @return array
      */
-    public function map(callable $callback)
+    public function map(Closure $callback)
     {
-        $results = [];
+        $results = array();
         foreach ($this->getMatchObjects() as $object) {
             $results[] = call_user_func($callback, $object);
         }
@@ -65,10 +66,10 @@ class MatchPattern
     }
 
     /**
-     * @param callable|null $callback
+     * @param Closure|null $callback
      * @return null|string
      */
-    public function first(callable $callback = null)
+    public function first(Closure $callback = null)
     {
         $matches = $this->performMatchAll();
         if (empty($matches[0])) return null;
@@ -94,7 +95,7 @@ class MatchPattern
      */
     private function performMatchAll()
     {
-        $matches = [];
+        $matches = array();
         preg::match_all($this->pattern->pattern, $this->subject, $matches, PREG_OFFSET_CAPTURE);
 
         return $matches;
@@ -106,7 +107,7 @@ class MatchPattern
      */
     private function constructMatchObjects(array $matches)
     {
-        $matchObjects = [];
+        $matchObjects = array();
 
         foreach ($matches[0] as $index => $match) {
             $matchObjects[] = new Match($this->subject, $index, $matches);

@@ -4,9 +4,14 @@ php:
   - 7.0
   - 5.6
 
+matrix:
+  include:
+    - php: 5.3
+      dist: precise
+
 branches:
   only:
-    master-php-5.6
+    master-php5.3
 
 before_install:
   - travis_retry composer self-update

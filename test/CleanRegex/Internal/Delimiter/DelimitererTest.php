@@ -2,22 +2,21 @@
 namespace Test\CleanRegex\Internal\Delimiter;
 
 use CleanRegex\Internal\Delimiter\Delimiterer;
-use CleanRegex\Internal\Delimiter\ExplicitDelimiterRequiredException;
 use PHPUnit\Framework\TestCase;
 
 class DelimitererTest extends TestCase
 {
     public function patternsAndResults()
     {
-        return [
-            ['siema', '/siema/'],
-            ['sie#ma', '/sie#ma/'],
-            ['sie/ma', '#sie/ma#'],
-            ['si/e#ma', '%si/e#ma%'],
-            ['si/e#m%a', '~si/e#m%a~'],
-            ['s~i/e#m%a', '+s~i/e#m%a+'],
-            ['s~i/e#++m%a', '!s~i/e#++m%a!'],
-        ];
+        return array(
+            array('siema', '/siema/'),
+            array('sie#ma', '/sie#ma/'),
+            array('sie/ma', '#sie/ma#'),
+            array('si/e#ma', '%si/e#ma%'),
+            array('si/e#m%a', '~si/e#m%a~'),
+            array('s~i/e#m%a', '+s~i/e#m%a+'),
+            array('s~i/e#++m%a', '!s~i/e#++m%a!'),
+        );
     }
 
     /**
@@ -40,14 +39,14 @@ class DelimitererTest extends TestCase
 
     public function alreadyDelimitered()
     {
-        return [
-            ['/a/'],
-            ['#a#'],
-            ['%a%'],
-            ['~a~'],
-            ['+a+'],
-            ['!a!'],
-        ];
+        return array(
+            array('/a/'),
+            array('#a#'),
+            array('%a%'),
+            array('~a~'),
+            array('+a+'),
+            array('!a!'),
+        );
     }
 
     /**
@@ -76,9 +75,17 @@ class DelimitererTest extends TestCase
         $delimiterer = new Delimiterer();
 
         // then
-        $this->expectException(ExplicitDelimiterRequiredException::class);
+        $this->expectException('\CleanRegex\Internal\Delimiter\ExplicitDelimiterRequiredException');
 
         // when
         $delimiterer->delimiter('s~i/e#++m%a!');
+    }
+
+    function expectException($className) {
+        if (method_exists($this, 'setExpectedException')) {
+            $this->setExpectedException($className);
+        } else {
+            parent::expectException($className);
+        }
     }
 }

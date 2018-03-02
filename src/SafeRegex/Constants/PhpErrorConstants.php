@@ -8,7 +8,7 @@ class PhpErrorConstants extends Constants
      */
     protected function getConstants()
     {
-        return [
+        return array(
             E_ERROR => 'E_ERROR',
             E_WARNING => 'E_WARNING',
             E_PARSE => 'E_PARSE',
@@ -23,7 +23,7 @@ class PhpErrorConstants extends Constants
             E_STRICT => 'E_STRICT',
             E_RECOVERABLE_ERROR => 'E_RECOVERABLE_ERROR',
             E_DEPRECATED => 'E_DEPRECATED',
-        ];
+        );
     }
 
     /**

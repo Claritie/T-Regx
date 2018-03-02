@@ -2,7 +2,6 @@
 namespace CleanRegex\Internal;
 
 use PHPUnit\Framework\TestCase;
-use InvalidArgumentException;
 
 class ArgumentsTest extends TestCase
 {
@@ -24,7 +23,7 @@ class ArgumentsTest extends TestCase
     public function shouldNotValidateString()
     {
         // then
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException('InvalidArgumentException');
 
         // when
         Arguments::string(2);
@@ -51,12 +50,20 @@ class ArgumentsTest extends TestCase
     public function shouldNotValidateInteger()
     {
         // then
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException('InvalidArgumentException');
 
         // when
         Arguments::integer('text');
 
         // then
         $this->assertTrue(true);
+    }
+
+    function expectException($className) {
+        if (method_exists($this, 'setExpectedException')) {
+            $this->setExpectedException($className);
+        } else {
+            parent::expectException($className);
+        }
     }
 }

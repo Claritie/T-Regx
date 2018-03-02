@@ -34,6 +34,7 @@ class RuntimeSafeRegexException extends SafeRegexException
      */
     public function getErrorName()
     {
-        return (new PregConstants())->getConstant($this->errorCode);
+        $pregConstants = new PregConstants();
+        return $pregConstants->getConstant($this->errorCode);
     }
 }

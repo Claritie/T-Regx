@@ -1,9 +1,7 @@
 <?php
 namespace CleanRegex;
 
-use CleanRegex\Exception\CleanRegex\NonexistentGroupException;
 use CleanRegex\Match\Match;
-use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 class MatchPatternTest extends TestCase
@@ -17,7 +15,7 @@ class MatchPatternTest extends TestCase
         $matches = pattern('Foo (B(ar))')->match('Foo Bar, Foo Bar, Foo Bar')->all();
 
         // then
-        $this->assertEquals(['Foo Bar', 'Foo Bar', 'Foo Bar'], $matches);
+        $this->assertEquals(array('Foo Bar', 'Foo Bar', 'Foo Bar'), $matches);
     }
 
     /**
@@ -25,15 +23,18 @@ class MatchPatternTest extends TestCase
      */
     public function shouldMatchAllForFirst()
     {
+        // given
+        $result = null;
+
         // when
         pattern('(?<capital>[A-Z])(?<lowercase>[a-z]+)')
             ->match('Foo, Leszek Ziom, Dupa')
-            ->first(function (Match $match) {
-
-                // then
-                $this->assertEquals(['Foo', 'Leszek', 'Ziom', 'Dupa'], $match->all());
-
+            ->first(function (Match $match) use (&$result) {
+                $result = $match->all();
             });
+
+        // then
+        $this->assertEquals(array('Foo', 'Leszek', 'Ziom', 'Dupa'), $result);
     }
 
     /**
@@ -42,7 +43,7 @@ class MatchPatternTest extends TestCase
     public function shouldThrowOnMissingGroup()
     {
         // then
-        $this->expectException(NonexistentGroupException::class);
+        $this->expectException('\CleanRegex\Exception\CleanRegex\NonexistentGroupException');
 
         // when
         pattern('(?<one>hello)')
@@ -94,16 +95,19 @@ class MatchPatternTest extends TestCase
     public function shouldGetGroupNames()
     {
         // given
+        $groupNames = null;
+
+        // when
         pattern('(?<one>first) and (?<two>second)')
             ->match('first and second')
-            ->first(function (Match $match) {
+            ->first(function (Match $match) use (&$groupNames) {
 
                 // when
                 $groupNames = $match->groupNames();
-
-                // then
-                $this->assertEquals(['one', 'two'], $groupNames);
             });
+
+        // then
+        $this->assertEquals(array('one', 'two'), $groupNames);
     }
 
     /**
@@ -112,7 +116,7 @@ class MatchPatternTest extends TestCase
     public function shouldValidateGroupName()
     {
         // then
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException('InvalidArgumentException');
         $this->expectExceptionMessage('Group index can only be an integer or string');
 
         // given
@@ -123,5 +127,19 @@ class MatchPatternTest extends TestCase
                 // when
                 $match->group(true);
             });
+    }
+
+    function expectException($className)
+    {
+        if (method_exists($this, 'setExpectedException')) {
+            $this->setExpectedException($className);
+        } else {
+            parent::expectException($className);
+        }
+    }
+
+    function expectExceptionMessage($message)
+    {
+        // ignore
     }
 }

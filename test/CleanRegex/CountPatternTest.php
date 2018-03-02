@@ -28,11 +28,11 @@ class CountPatternTest extends TestCase
 
     public function patternsAndSubjects()
     {
-        return [
-            ['/dog/', 'cat', 0],
-            ['/[aoe]/', 'match vowels', 3],
-            ['/car(pet)?/', 'car carpet', 2],
-            ['/car(p(e(t)))?/', 'car carpet car carpet', 4],
-        ];
+        return array(
+            array('/dog/', 'cat', 0),
+            array('/[aoe]/', 'match vowels', 3),
+            array('/car(pet)?/', 'car carpet', 2),
+            array('/car(p(e(t)))?/', 'car carpet car carpet', 4),
+        );
     }
 }

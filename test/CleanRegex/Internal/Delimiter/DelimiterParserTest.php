@@ -8,17 +8,17 @@ class DelimiterParserTest extends TestCase
 {
     public function delimitered()
     {
-        return [
-            ['//', '/'],
-            ['/a/', '/'],
-            ['/siema/', '/'],
-            ['/sie#ma/', '/'],
-            ['#sie/ma#', '#'],
-            ['%si/e#ma%', '%'],
-            ['~si/e#m%a~', '~'],
-            ['+s~i/e#m%a+', '+'],
-            ['!s~i/e#++m%a!', '!'],
-        ];
+        return array(
+            array('//', '/'),
+            array('/a/', '/'),
+            array('/siema/', '/'),
+            array('/sie#ma/', '/'),
+            array('#sie/ma#', '#'),
+            array('%si/e#ma%', '%'),
+            array('~si/e#m%a~', '~'),
+            array('+s~i/e#m%a+', '+'),
+            array('!s~i/e#++m%a!', '!'),
+        );
     }
 
     /**
@@ -41,26 +41,26 @@ class DelimiterParserTest extends TestCase
 
     public function notDelimitered()
     {
-        return [
-            [''],
-            ['a'],
-            ['/'],
-            ['siema'],
-            ['sie#ma'],
-            ['sie/ma'],
-            ['si/e#ma'],
-            ['si/e#m%a'],
-            ['s~i/e#m%a'],
-            ['s~i/e#++m%a'],
+        return array(
+            array(''),
+            array('a'),
+            array('/'),
+            array('siema'),
+            array('sie#ma'),
+            array('sie/ma'),
+            array('si/e#ma'),
+            array('si/e#m%a'),
+            array('s~i/e#m%a'),
+            array('s~i/e#++m%a'),
 
-            ['/siema'],
-            ['/sie#ma'],
-            ['#sie/ma'],
-            ['%si/e#ma'],
-            ['si/e#m%a~'],
-            ['s~i/e#m%a+'],
-            ['s~i/e#++m%a!'],
-        ];
+            array('/siema'),
+            array('/sie#ma'),
+            array('#sie/ma'),
+            array('%si/e#ma'),
+            array('si/e#m%a~'),
+            array('s~i/e#m%a+'),
+            array('s~i/e#++m%a!'),
+        );
     }
 
     /**

@@ -65,11 +65,11 @@ class FlagsValidatorTest extends TestCase
 
     public function invalidFlags()
     {
-        return [
-            ['+g'],
-            ['-g'],
-            ['/'],
-            ['G'],
-        ];
+        return array(
+            array('+g'),
+            array('-g'),
+            array('/'),
+            array('G'),
+        );
     }
 }

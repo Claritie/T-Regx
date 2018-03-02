@@ -6,7 +6,7 @@ use CleanRegex\Internal\Arguments;
 class DelimiterParser
 {
     /** @var array */
-    private $validDelimiters = ['/', '#', '%', '~', '+', '!'];
+    private $validDelimiters = array('/', '#', '%', '~', '+', '!');
 
     /**
      * @param string $pattern

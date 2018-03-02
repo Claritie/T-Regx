@@ -14,7 +14,7 @@ class SplitPatternTest extends TestCase
         $matches = pattern(',')->split('Foo,Bar,Cat')->split();
 
         // then
-        $this->assertEquals(['Foo', 'Bar', 'Cat'], $matches);
+        $this->assertEquals(array('Foo', 'Bar', 'Cat'), $matches);
     }
 
     /**
@@ -26,7 +26,7 @@ class SplitPatternTest extends TestCase
         $matches = pattern('(,)')->split('One,Two,Three')->separate();
 
         // then
-        $this->assertEquals(['One', ',', 'Two', ',', 'Three'], $matches);
+        $this->assertEquals(array('One', ',', 'Two', ',', 'Three'), $matches);
     }
 
     /**
@@ -38,7 +38,7 @@ class SplitPatternTest extends TestCase
         $matches = pattern('9')->split('Foo,Bar,Cat')->split();
 
         // then
-        $this->assertEquals(['Foo,Bar,Cat'], $matches);
+        $this->assertEquals(array('Foo,Bar,Cat'), $matches);
     }
 
     /**
@@ -50,6 +50,6 @@ class SplitPatternTest extends TestCase
         $matches = pattern('9')->split('One,Two,Three')->separate();
 
         // then
-        $this->assertEquals(['One,Two,Three'], $matches);
+        $this->assertEquals(array('One,Two,Three'), $matches);
     }
 }

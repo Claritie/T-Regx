@@ -48,7 +48,8 @@ class Pattern
     public function matches($subject)
     {
         Arguments::string($subject);
-        return (new MatchesPattern(new InternalPattern($this->pattern), $subject))->matches();
+        $matchesPattern = new MatchesPattern(new InternalPattern($this->pattern), $subject);
+        return $matchesPattern->matches();
     }
 
     /**
@@ -67,7 +68,8 @@ class Pattern
      */
     public function filter(array $haystack)
     {
-        return (new FilterArrayPattern(new InternalPattern($this->pattern), $haystack))->filter();
+        $filterArrayPattern = new FilterArrayPattern(new InternalPattern($this->pattern), $haystack);
+        return $filterArrayPattern->filter();
     }
 
     /**
@@ -88,7 +90,8 @@ class Pattern
     public function count($subject)
     {
         Arguments::string($subject);
-        return (new CountPattern(new InternalPattern($this->pattern), $subject))->count();
+        $countPattern = new CountPattern(new InternalPattern($this->pattern), $subject);
+        return $countPattern->count();
     }
 
     /**
@@ -96,7 +99,8 @@ class Pattern
      */
     public function quote()
     {
-        return (new QuotePattern(new InternalPattern($this->pattern)))->quote();
+        $quotePattern = new QuotePattern(new InternalPattern($this->pattern));
+        return $quotePattern->quote();
     }
 
     /**
@@ -104,7 +108,8 @@ class Pattern
      */
     public function valid()
     {
-        return (new ValidPattern(new InternalPattern($this->pattern)))->isValid();
+        $validPattern = new ValidPattern(new InternalPattern($this->pattern));
+        return $validPattern->isValid();
     }
 
     /**
@@ -113,7 +118,8 @@ class Pattern
      */
     public function delimitered()
     {
-        return (new Delimiterer())->delimiter($this->pattern);
+        $delimiterer = new Delimiterer();
+        return $delimiterer->delimiter($this->pattern);
     }
 
     /**
