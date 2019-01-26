@@ -2,6 +2,7 @@
 namespace TRegx\CleanRegex\Internal\Prepared\Quoteable;
 
 use InvalidArgumentException;
+use TRegx\CleanRegex\Internal\Prepared\Quote\Quoter;
 use TRegx\CleanRegex\Internal\StringValue;
 use function array_map;
 use function implode;
@@ -10,10 +11,13 @@ class CompositeUserInput implements Quoteable
 {
     /** @var array */
     private $userInputs;
+    /** @var Quoter */
+    private $quoter;
 
-    public function __construct(array $userInputs)
+    public function __construct(array $userInputs, Quoter $quoter)
     {
         $this->userInputs = $userInputs;
+        $this->quoter = $quoter;
     }
 
     public function quote(string $delimiter): string
@@ -40,7 +44,7 @@ class CompositeUserInput implements Quoteable
     {
         return array_map(function ($quoteable) {
             $this->validateQuoteable($quoteable);
-            return new UserInputQuoteable($quoteable);
+            return new UserInputQuoteable($quoteable, $this->quoter);
         }, $this->userInputs);
     }
 

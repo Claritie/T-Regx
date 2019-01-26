@@ -2,6 +2,7 @@
 namespace TRegx\CleanRegex\Internal\Prepared\Parser;
 
 use InvalidArgumentException;
+use TRegx\CleanRegex\Internal\Prepared\Quote\Quoter;
 use TRegx\CleanRegex\Internal\Prepared\Quoteable\Quoteable;
 use TRegx\CleanRegex\Internal\Prepared\Quoteable\RawQuoteable;
 use TRegx\CleanRegex\Internal\StringValue;
@@ -19,10 +20,14 @@ class InjectingParser implements Parser
     /** @var array */
     private $iteratedPlaceholders;
 
-    public function __construct(string $input, array $values)
+    /** @var Quoter */
+    private $quoter;
+
+    public function __construct(string $input, array $values, Quoter $quoter)
     {
         $this->input = $input;
         $this->values = $values;
+        $this->quoter = $quoter;
     }
 
     public function parse(string $delimiter): Quoteable
@@ -45,7 +50,7 @@ class InjectingParser implements Parser
             [$placeholder, $label] = $match;
             $this->iteratedPlaceholders[] = $label;
             $value = $this->getValueByLabel($label, $placeholder);
-            return preg::quote($value, $delimiter);
+            return $this->quoter->quote($value, $delimiter);
         };
     }
 

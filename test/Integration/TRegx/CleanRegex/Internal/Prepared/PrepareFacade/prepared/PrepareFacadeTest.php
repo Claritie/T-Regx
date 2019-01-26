@@ -5,6 +5,7 @@ use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use TRegx\CleanRegex\Internal\Prepared\Parser\PreparedParser;
 use TRegx\CleanRegex\Internal\Prepared\PrepareFacade;
+use TRegx\CleanRegex\Internal\Prepared\Quote\PregQuoter;
 
 class PrepareFacadeTest extends TestCase
 {
@@ -17,7 +18,7 @@ class PrepareFacadeTest extends TestCase
     public function shouldInject(array $input, string $expected)
     {
         // given
-        $facade = new PrepareFacade(new PreparedParser($input));
+        $facade = new PrepareFacade(new PreparedParser($input, new PregQuoter()));
 
         // when
         $pattern = $facade->getPattern();
@@ -85,7 +86,7 @@ class PrepareFacadeTest extends TestCase
     public function shouldThrow_onInvalidInput(array $input, string $message)
     {
         // given
-        $facade = new PrepareFacade(new PreparedParser($input));
+        $facade = new PrepareFacade(new PreparedParser($input, new PregQuoter()));
 
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage($message);

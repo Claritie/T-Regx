@@ -2,6 +2,7 @@
 namespace TRegx\CleanRegex\Internal\Prepared\Parser;
 
 use InvalidArgumentException;
+use TRegx\CleanRegex\Internal\Prepared\Quote\Quoter;
 use TRegx\CleanRegex\Internal\Prepared\Quoteable\CompositeQuoteable;
 use TRegx\CleanRegex\Internal\Prepared\Quoteable\CompositeUserInput;
 use TRegx\CleanRegex\Internal\Prepared\Quoteable\EmptyQuoteable;
@@ -14,10 +15,13 @@ class PreparedParser implements Parser
 {
     /** @var array */
     private $input;
+    /** @var Quoter */
+    private $quoter;
 
-    public function __construct(array $input)
+    public function __construct(array $input, Quoter $quoter)
     {
         $this->input = $input;
+        $this->quoter = $quoter;
     }
 
     public function parse(string $delimiter): Quoteable
@@ -36,7 +40,7 @@ class PreparedParser implements Parser
             if ($count === 0) {
                 return new EmptyQuoteable();
             }
-            return new CompositeUserInput($quoteable);
+            return new CompositeUserInput($quoteable, $this->quoter);
         }
         if (is_string($quoteable)) {
             return new RawQuoteable($quoteable);

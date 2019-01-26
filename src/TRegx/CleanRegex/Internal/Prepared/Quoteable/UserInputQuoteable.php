@@ -1,20 +1,23 @@
 <?php
 namespace TRegx\CleanRegex\Internal\Prepared\Quoteable;
 
-use TRegx\SafeRegex\preg;
+use TRegx\CleanRegex\Internal\Prepared\Quote\Quoter;
 
 class UserInputQuoteable implements Quoteable
 {
     /** @var string */
     private $userInput;
+    /** @var Quoter */
+    private $quoter;
 
-    public function __construct(string $userInput)
+    public function __construct(string $userInput, Quoter $quoter)
     {
         $this->userInput = $userInput;
+        $this->quoter = $quoter;
     }
 
     public function quote(string $delimiter): string
     {
-        return preg::quote($this->userInput, $delimiter);
+        return $this->quoter->quote($this->userInput, $delimiter);
     }
 }

@@ -6,6 +6,7 @@ use TRegx\CleanRegex\Internal\Prepared\Parser\InjectingParser;
 use TRegx\CleanRegex\Internal\Prepared\Parser\Parser;
 use TRegx\CleanRegex\Internal\Prepared\Parser\PreparedParser;
 use TRegx\CleanRegex\Internal\Prepared\PrepareFacade;
+use TRegx\CleanRegex\Internal\Prepared\Quote\PregQuoter;
 
 class PatternBuilder
 {
@@ -16,7 +17,7 @@ class PatternBuilder
      */
     public static function inject(string $input, array $values): Pattern
     {
-        return self::build(new InjectingParser($input, $values));
+        return self::build(new InjectingParser($input, $values, new PregQuoter()));
     }
 
     /**
@@ -25,7 +26,7 @@ class PatternBuilder
      */
     public static function prepare(array $input): Pattern
     {
-        return self::build(new PreparedParser($input));
+        return self::build(new PreparedParser($input, new PregQuoter()));
     }
 
     /**
